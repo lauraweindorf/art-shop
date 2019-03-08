@@ -39,7 +39,7 @@ ganache-cli -m "spirit supply whale amount human item harsh scare congress disco
 
 Your terminal should look something like this:
 
-![truffle test](images/ganache-cli.png)
+![](images/ganache-cli.png)
 
 In a separate terminal window, Compile smart contracts:
 
