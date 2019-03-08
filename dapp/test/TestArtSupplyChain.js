@@ -20,43 +20,34 @@ contract('ArtSupplyChain', function(accounts) {
     const artworkMedium = "Acrylic enamel and watercolor on canvas"
     const artworkStyle = "Abstract expressionism"
     const artistNotes = "Thinking of dentists and teeth"
-    const artworkPrice = web3.utils.toWei("1", "ether")
+    const artworkPrice = web3.utils.toWei('1', 'ether')
     var artworkState = 0
     const artAdopterID = accounts[2]
     const shipperID = accounts[3]
     const emptyAddress = '0x00000000000000000000000000000000000000'
 
-    console.log("ganache-cli accounts used here...")
-    console.log("Contract Owner: accounts[0] ", accounts[0])
-    console.log("Artist: accounts[1] ", accounts[0])
-    console.log("Art Adopter: accounts[2] ", accounts[0])
-    console.log("Shipper: accounts[3] ", accounts[0])
-
     // Test: createArtwork()
     it("Testing smart contract function createArtwork() that allows an artist to create and define a new piece of art", async() => {
         const artSupplyChain = await ArtSupplyChain.deployed()
-        
-        // Watch the emitted event Created()
-        //var event = artSupplyChain.Created()
-        //await event.watch((err, res) => {
-        //  eventEmitted = true
-        //})
 
         // Mark an artwork as Created by calling function createArtwork()
-        artworkID = await artSupplyChain.createArtwork.call(artworkTitle, artworkYear, artworkMedium, artworkStyle, originArtistID, originArtistName, originArtistInfo, originArtistLocation, artistNotes, {from: originArtistID})
-
-        console.log(`artworkID = ${artworkID}`)
-        // Retrieve the owner of the newly-saved artwork from the blockchain
-        const resultArtworkOwner = await artSupplyChain.fetchArtworkOwner.call(artworkID)
-
-        // Verify artwork ID and owner
-        assert.equal(artworkID, '1', `Error: Invalid artwork ID. Expecting 1, but got ${artworkID}`)
-        assert.equal(resultArtworkOwner, artworkOwnerID, 'Invalid artistID')
+        const result = await artSupplyChain.createArtwork(artworkTitle, artworkYear, artworkMedium, artworkStyle, originArtistID, originArtistName, originArtistInfo, originArtistLocation, artistNotes, {from: originArtistID})
+        // Get the returned artworkID
+        const artworkID = parseInt(result.logs[0].args.artworkID);
 
         // Verify event emitted
-        /*truffleAssert.eventEmitted(artworkID, 'Created', (ev) => {
-                return true;
-            }, 'ArtSupplyChain contract should emit the Created event');      */
+        truffleAssert.eventEmitted(result, 'Created');
+
+        // Retrieve the owner of the newly-saved artwork from the blockchain
+        const resultArtworkDetails = await artSupplyChain.fetchArtworkDetails.call(artworkID)
+
+        assert.equal(parseInt(resultArtworkDetails[0]), 1, 'Invalid artwork ID')
+        assert.equal(resultArtworkDetails[1], artworkOwnerID, 'Invalid artwork owner')
+        assert.equal(resultArtworkDetails[2], artworkTitle, 'Invalid artwork title')
+        assert.equal(resultArtworkDetails[3], artworkYear, 'Invalid artwork year')
+        assert.equal(resultArtworkDetails[4], artworkStyle, 'Invalid artwork style')
+        assert.equal(resultArtworkDetails[6], artistNotes, 'Invalid artist notes')
+        assert.equal(resultArtworkDetails[7], 0, 'Invalid artwork state')
     })
     
     /*

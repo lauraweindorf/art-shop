@@ -191,14 +191,14 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
         verifyCaller(_originArtistID)
     returns
     (
-        uint artworkID
+        uint _artworkID
     )
     {
-        artworkID = seq++;
+        _artworkID = seq++;
 
-        artworks[artworkID] = Artwork
+        artworks[_artworkID] = Artwork
         (
-            artworkID,
+            _artworkID,
             _artworkTitle,
             _artworkYear,
             _artworkMedium,
@@ -215,10 +215,8 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
             address(0)
         );
 
-        //addArtist(_originArtistID);
-
         // Emit the appropriate event
-        //emit Created(artworkID);
+        emit Created(_artworkID);
     }
 
     // Define a function 'frameArtwork' that allows an artist to mark an artwork 'Framed'
@@ -379,6 +377,7 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
     // Define a function 'fetchArtworkDetails' that fetches the artwork data
     function fetchArtworkDetails(uint _artworkID) public view returns 
     (
+        uint artworkID,
         address artworkOwnerID,
         string memory artworkTitle,
         uint artworkYear,
@@ -395,6 +394,7 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
     
         return 
         (
+            a.artworkID,
             a.artworkOwnerID,
             a.artworkTitle,
             a.artworkYear,
