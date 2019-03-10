@@ -32,7 +32,7 @@ contract ShipperRole {
     }
 
     // Define a function 'addShipper' that adds this role
-    function addShipper(address account) public onlyShipper {
+    function addShipper(address account) public {
         _addShipper(account);
     }
 

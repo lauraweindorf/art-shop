@@ -1,5 +1,5 @@
 {
-  "name": "art-supply-chain",
+  "name": "art-shop",
   "version": "1.0.0",
   "description": "Prove the authenticity of artwork using the Ethereum blockchain.",
   "main": "index.js",

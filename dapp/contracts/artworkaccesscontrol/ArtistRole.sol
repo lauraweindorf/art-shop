@@ -31,7 +31,7 @@ contract ArtistRole {
     }
 
     // Define a function 'addArtist' that adds this role
-    function addArtist(address account) public onlyArtist {
+    function addArtist(address account) public {
         _addArtist(account);
     }
 

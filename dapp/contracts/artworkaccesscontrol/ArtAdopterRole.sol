@@ -31,7 +31,7 @@ contract ArtAdopterRole {
     }
 
   // Define a function 'addAdopter' that adds this role
-    function addAdopter(address account) public onlyArtAdopter {
+    function addAdopter(address account) public {
         _addAdopter(account);
     }
 

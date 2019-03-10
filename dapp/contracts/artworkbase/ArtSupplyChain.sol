@@ -47,7 +47,7 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
         string  originArtistInfo;  // Artist Information
         string  originArtistLocation; // Location of Artist
         string  artistNotes; // Artist's Artwork Notes
-        uint    artworkPrice; // Artwork Price
+        uint256 artworkPrice; // Artwork Price
         State   artworkState;  // Artwork State as represented in the enum above
         address payable artAdopterID; // Metamask-Ethereum address of the Art Adopter
         address shipperID;  // Metamask-Ethereum address of the Shipper
@@ -102,7 +102,7 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
 
     // Define a modifier that checks if the paid amount is sufficient to cover the price
     modifier sufficientFunds(uint _artworkID) { 
-        uint _price = artworks[_artworkID].artworkPrice;
+        uint256 _price = artworks[_artworkID].artworkPrice;
         require(msg.value >= _price); 
         _;
     }
@@ -110,8 +110,8 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
     // Define a modifier that checks the price and refunds the remaining balance
     modifier handleExcess(uint _artworkID) {
         _;
-        uint _price = artworks[_artworkID].artworkPrice;
-        uint amountToReturn = msg.value - _price;
+        uint256 _price = artworks[_artworkID].artworkPrice;
+        uint256 amountToReturn = msg.value - _price;
 
         if (amountToReturn > 0) {
             msg.sender.transfer(amountToReturn);
@@ -187,18 +187,17 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
         string memory _artistNotes
     ) 
         public
-        //onlyArtist
         verifyCaller(_originArtistID)
     returns
     (
-        uint _artworkID
+        uint artworkID
     )
     {
-        _artworkID = seq++;
+        artworkID = seq++;
 
-        artworks[_artworkID] = Artwork
+        artworks[artworkID] = Artwork
         (
-            _artworkID,
+            artworkID,
             _artworkTitle,
             _artworkYear,
             _artworkMedium,
@@ -209,14 +208,16 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
             _originArtistInfo,
             _originArtistLocation,
             _artistNotes,
-            0,
+            uint256(0),
             State.Created,
             address(0),
             address(0)
         );
 
         // Emit the appropriate event
-        emit Created(_artworkID);
+        emit Created(artworkID);
+
+        addArtist(_originArtistID);
     }
 
     // Define a function 'frameArtwork' that allows an artist to mark an artwork 'Framed'
@@ -234,7 +235,7 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
     }
 
     // Define a function 'adoptableArtwork' that allows an artist to mark an artwork as 'ForAdoption'
-    function adoptableArtwork(uint _artworkID, uint _price) public 
+    function adoptableArtwork(uint _artworkID, uint256 _price) public 
         onlyArtist
         onlyArtworkOwner(_artworkID)
         framed(_artworkID)
@@ -252,7 +253,7 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
     // Use the above defined modifiers to check if the item is available for sale, if the buyer has paid enough, 
     // and any excess ether sent is refunded back to the buyer
     function adoptArtwork(uint _artworkID, address payable _adopterID) public payable 
-        onlyArtAdopter
+        //onlyArtAdopter - TODO: user is able to register as an art adopter
         adoptable(_artworkID)
         verifyCaller(_adopterID)
         sufficientFunds(_artworkID)
@@ -260,14 +261,13 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
     {
         Artwork storage a = artworks[_artworkID];
 
+        uint256 price = a.artworkPrice;
+        // Transfer money to artist and emit 'Adopted' event
+        a.originArtistID.transfer(price);
+
         a.artAdopterID = _adopterID;
         a.artworkOwnerID = _adopterID;
         a.artworkState = State.Adopted;
-
-        uint _price = a.artworkPrice;
-    
-        // Transfer money to artist emit 'Adopted' event
-        a.originArtistID.transfer(_price);
 
         emit Adopted(_artworkID);
     }
@@ -289,7 +289,6 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
 
     // Define a function 'pickUpArtwork' that allows a shipper to mark an artwork 'PickedUp'
     function pickUpArtwork(uint _artworkID) public 
-        onlyShipper
         packed(_artworkID)
     {
         Artwork storage a = artworks[_artworkID];
@@ -300,9 +299,12 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
         a.shipperID = msg.sender;
 
         // Update state and emit 'PickedUp'
-        a.artworkState = State.Packed;
+        a.artworkState = State.PickedUp;
 
         emit PickedUp(_artworkID);
+
+        // Add rep picking up the artwork to the Shipper accounts
+        addShipper(msg.sender);
     }
 
     // Define a function 'shipArtwork' that allows the shipper to mark an artwork 'Shipped'
@@ -340,17 +342,19 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
     // Define a function 'fetchArtworkOwner' that gets the current owner of the artwork
     function fetchArtworkOwner(uint _artworkID) public view returns (address artworkOwnerID)
     {
-        Artwork storage a = artworks[_artworkID];
-
-        return (a.artworkOwnerID);
+        artworkOwnerID = artworks[_artworkID].artworkOwnerID;
     }
 
     // Define a function 'fetchArtworkState' that gets the current state of the artwork
     function fetchArtworkState(uint _artworkID) public view returns (State artworkState)
     {
-        Artwork storage a = artworks[_artworkID];
+        artworkState = artworks[_artworkID].artworkState;
+    }
 
-        return (a.artworkState);
+    // Define a function 'fetchArtworkPrice' that gets the adoption price of the artwork
+    function fetchArtworkPrice(uint _artworkID) public view returns (uint256 artworkPrice)
+    {
+        artworkPrice = artworks[_artworkID].artworkPrice;
     }
 
     // Define a functon 'fetchArtistDetails' that gets the artist information
@@ -382,7 +386,7 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
         string memory artworkTitle,
         uint artworkYear,
         string memory artworkStyle,
-        uint artworkPrice,
+        uint256 artworkPrice,
         string memory artistNotes,
         State artworkState,
         address payable artAdopterID,
