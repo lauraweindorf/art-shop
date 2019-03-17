@@ -13,22 +13,22 @@ This project is the beginning of an idea to liberate artists and their artwork s
 ## Activity Diagram
 This diagram illustrates the activities and roles that are involved in the Art Supply Chain. The Art Adoption Shop is more of a virtual role that illustrates how the smart contract is responsible for adding the artwork to the Art Shop inventory.
 
-!()[images/art-adoption-activity-diagram.png]
+![](images/art-adoption-activity-diagram.png)
 
 ## Class Diagram
 The class diagram is primarily used to illustrate the solidity folders and components that make up the smart contract files.
 
-!()[images/art-adoption-class-diagram.png]
+![](images/art-adoption-class-diagram.png)
 
 ## Sequence Diagram
 The process of creating the sequence diagram for the smart contract was useful in revealing an additional object that is central to the whole process, namely the Artwork. There are some differences between UML diagramming in an object-oriented sense vs. smart contracts. The main purpose of the diagramming for this project was to communicate the design and serve as a "recipe" for proceeding with the implementation. 
 
-!()[images/art-adoption-sequence-diagram.png]
+![](images/art-adoption-sequence-diagram.png)
 
 ## State Diagram
 The state diagram for the most interesting to do, being new to smart contract design. It was helpful in designing the flow of states and the modifiers that would be needed for each contract call where there was a state transition.
 
-!()[images/art-adoption-state-diagram.png]
+![](images/art-adoption-state-diagram.png)
 
 # Conclusion
 Designing the smart contract implementation for the Art Supply Chain project was extremely helpful in that it necessitated modeling different views which naturally led to a harmonious design. That feeling when you know it feels right!
