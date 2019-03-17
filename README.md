@@ -5,11 +5,6 @@
 
 This repository contains an Ethereum DApp that demonstrates an Artwork Supply Chain flow between an Artist and Art Adopter. The user story is similar to any commonly used supply chain process. An artist can add artworks to the inventory of adoptable art stored in the blockchain. An Art Adopter can adopt the artwork, for a fee, from the inventory system. Additionally an Artist can mark an artwork as Packed and ready for pick-up. The Shipper thens ships and marks the artwork as Delivered to the Art Adopter.
 
-### The ArtSupplyChain contract on the Rinkeby Test Network
-
-[Rinkeby Contract Address: 0x40B3dc72eCcf6dD6997638e8474a6C6E82c5289C](https://rinkeby.etherscan.io/address/0x40b3dc72eccf6dd6997638e8474a6c6e82c5289c#)
-
-
 ## Getting Started
 
 These instructions will get the project up and running in your local development environment.
@@ -137,4 +132,5 @@ See also the list of [contributors](https://github.com/lauraweindorf/art-shop/co
 * Solidity v0.5.4
 * Ganache v1.3.1
 * Truffle v5.0.5
+* Node v10.14.1
 * `TODO: IPFS`
