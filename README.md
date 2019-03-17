@@ -18,7 +18,7 @@ Install Truffle and Ganache (or optionally ganache-cli). Enable the MetaMask ext
 Clone this repository:
 
 ```
-git clone https://github.com/lauraweindorf/art-shop
+git clone [repo]
 ```
 
 Change directory to the ```art-shop/dapp``` folder and install all requisite npm packages (as listed in ```package.json```):
