@@ -31,10 +31,10 @@ cd art-shop/dapp
 npm install
 ```
 
-Launch Ganache:
+Launch Ganache, or you can use `ganache-cli`, but you'll need to modify the port setting in `truffle.js` to 8545:
 
 ```
-ganache-cli -m "spirit supply whale amount human item harsh scare congress discover talent hamster"
+ganache-cli -m "apart ice rhythm antenna regular tattoo hint outer mushroom invite sail huge"
 ```
 
 Your terminal should look something like this:
@@ -82,7 +82,7 @@ See also the list of [contributors](https://github.com/lauraweindorf/art-shop/co
 ## Acknowledgments
 
 * Solidity v0.5.4
-* Ganache-cli
+* Ganache v1.3.1
 * Truffle v5.0.5
 * IPFS
 

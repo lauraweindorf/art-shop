@@ -15,6 +15,9 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
     // Define a public mapping 'artworks' that maps the artwork ID to an Artwork.
     mapping (uint => Artwork) artworks;
 
+    // Define a private mapping to keep track of created artwork IDs
+    mapping (uint => bool) private artworkIds;
+
     // Define a public mapping 'artworksHistory' that maps the unique artwork ID to an array of TxHash, 
     // that track its journey through the supply chain -- to be sent from DApp.
     mapping (uint => string[]) artworksHistory;
@@ -66,13 +69,13 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
     // Define a modifier that checks the owner of the artwork
     modifier onlyArtworkOwner (uint _artworkID) {
         address _artworkOwner = artworks[_artworkID].artworkOwnerID;
-        require(msg.sender == _artworkOwner);
+        require(msg.sender == _artworkOwner, "Only Artwork owner is allowed");
         _;
     }
 
     // Define a modifer that verifies the Caller
     modifier verifyCaller (address _address) {
-        require(msg.sender == _address); 
+        require(msg.sender == _address, "Address is not equal to the sender"); 
         _;
     }
 
@@ -80,7 +83,7 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
     // that the msg.sender is the original creator of the artwork
     modifier verifyArtist (uint _artworkID) {
         address _originArtistID = artworks[_artworkID].originArtistID;
-        require(msg.sender == _originArtistID); 
+        require(msg.sender == _originArtistID, "Sender is not the Origin Artist"); 
         _;
     }
 
@@ -88,7 +91,7 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
     // that the msg.sender is the assigned Shipper for the artwork.
     modifier verifyShipper (uint _artworkID) {
         address _shipperID = artworks[_artworkID].shipperID;
-        require(msg.sender == _shipperID); 
+        require(msg.sender == _shipperID, "Sender is not the Shipper"); 
         _;
     }
 
@@ -96,14 +99,14 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
     // that the msg.sender is the actual adopter of the artwork.
     modifier verifyAdopter (uint _artworkID) {
         address _adopterID = artworks[_artworkID].artAdopterID;
-        require(msg.sender == _adopterID); 
+        require(msg.sender == _adopterID, "Sender is not the Art Adopter"); 
         _;
     }
 
     // Define a modifier that checks if the paid amount is sufficient to cover the price
     modifier sufficientFunds(uint _artworkID) { 
         uint256 _price = artworks[_artworkID].artworkPrice;
-        require(msg.value >= _price); 
+        require(msg.value >= _price, "Insufficient funds"); 
         _;
     }
   
@@ -118,51 +121,58 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
         }
     }
 
+    // This will ensure the artworkID exists on the blockchain
+    modifier has(uint _artworkID) {
+        require(_artworkID > 0);
+        require(artworkIds[_artworkID], "Artwork doesn't exist");
+        _;
+    }
+
     // Define a modifier that checks if a state of an artwork is Created
     modifier created(uint _artworkID) {
-        require(artworks[_artworkID].artworkState == State.Created);
+        require(artworks[_artworkID].artworkState == State.Created, "Artwork not created");
         _;
     }
 
     // Define a modifier that checks if a state of an artwork is Framed
     modifier framed(uint _artworkID) {
-        require(artworks[_artworkID].artworkState == State.Framed);
+        require(artworks[_artworkID].artworkState == State.Framed, "Artwork not framed");
         _;
     }
   
     // Define a modifier that checks if a state of an artwork is Adoptable
     modifier adoptable(uint _artworkID) {
-        require(artworks[_artworkID].artworkState == State.Adoptable);
+        require(artworks[_artworkID].artworkState == State.Adoptable, "Artwork not adoptable");
         _;
     }
 
     // Define a modifier that checks if a state of an artwork is Adopted
     modifier adopted(uint _artworkID) {
-        require(artworks[_artworkID].artworkState == State.Adopted);
+        require(artworks[_artworkID].artworkState == State.Adopted, "Artwork not adopted");
         _;
     }
   
     // Define a modifier that checks if a state of an artwork is Packed
     modifier packed(uint _artworkID) {
-        require(artworks[_artworkID].artworkState == State.Packed);
+        require(artworks[_artworkID].artworkState == State.Packed, "Artwork not packed");
         _;
     }
 
     // Define a modifier that checks if a state of an artwork is Picked Up by the shipper
     modifier pickedUp(uint _artworkID) {
-        require(artworks[_artworkID].artworkState == State.PickedUp);
+        require(artworks[_artworkID].artworkState == State.PickedUp, "Artwork not picked up");
         _;
     }
 
     // Define a modifier that checks if a state of an artwork is Shipped
     modifier shipped(uint _artworkID) {
-        require(artworks[_artworkID].artworkState == State.Shipped);
+        require(artworks[_artworkID].artworkState == State.Shipped, "Artwork not shipped");
         _;
     }
 
     // Define a modifier that checks if a state of an artwork is Delivered
     modifier delivered(uint _artworkID) {
-        require(artworks[_artworkID].artworkState == State.Delivered);
+        require(artworks[_artworkID].artworkState == State.Delivered, "Artwork not delivered");
         _;
     }
 
@@ -176,52 +186,59 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
     // Only the artist can create the artwork, and must be the same as the creator of the art
     function createArtwork
     (
-        string memory _artworkTitle,
-        uint _artworkYear,
-        string memory _artworkMedium,
-        string memory _artworkStyle,
-        address payable _originArtistID, 
-        string memory _originArtistName, 
-        string memory _originArtistInfo, 
-        string memory _originArtistLocation,  
-        string memory _artistNotes
+        string memory artworkTitle,
+        uint artworkYear,
+        string memory artworkMedium,
+        string memory artworkStyle,
+        address payable originArtistID, 
+        string memory originArtistName, 
+        string memory originArtistInfo, 
+        string memory originArtistLocation,  
+        string memory artistNotes
     ) 
         public
-        verifyCaller(_originArtistID)
-    returns
-    (
-        uint artworkID
-    )
+        verifyCaller(originArtistID)
+        returns
+        (
+            uint artworkID
+        )
     {
         artworkID = seq++;
 
         artworks[artworkID] = Artwork
         (
             artworkID,
-            _artworkTitle,
-            _artworkYear,
-            _artworkMedium,
-            _artworkStyle,
-            _originArtistID,
-            _originArtistID,
-            _originArtistName,
-            _originArtistInfo,
-            _originArtistLocation,
-            _artistNotes,
+            artworkTitle,
+            artworkYear,
+            artworkMedium,
+            artworkStyle,
+            originArtistID,
+            originArtistID,
+            originArtistName,
+            originArtistInfo,
+            originArtistLocation,
+            artistNotes,
             uint256(0),
             State.Created,
             address(0),
             address(0)
         );
 
+        // Add ID to mapping of created artworks
+        artworkIds[artworkID] = true;
+
         // Emit the appropriate event
         emit Created(artworkID);
 
-        addArtist(_originArtistID);
+        // Add the new artist, if not already done
+        if (!isArtist(originArtistID)) {
+            addArtist(originArtistID);
+        }
     }
 
     // Define a function 'frameArtwork' that allows an artist to mark an artwork 'Framed'
-    function frameArtwork(uint _artworkID) public
+    function frameArtwork(uint _artworkID) 
+        public
         onlyArtist
         onlyArtworkOwner(_artworkID)
         created(_artworkID)
@@ -235,7 +252,8 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
     }
 
     // Define a function 'adoptableArtwork' that allows an artist to mark an artwork as 'ForAdoption'
-    function adoptableArtwork(uint _artworkID, uint256 _price) public 
+    function adoptableArtwork(uint _artworkID, uint256 _price) 
+        public 
         onlyArtist
         onlyArtworkOwner(_artworkID)
         framed(_artworkID)
@@ -252,7 +270,9 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
     // Define a function 'adoptArtwork' that allows the adopter to mark an item 'Adopted'
     // Use the above defined modifiers to check if the item is available for sale, if the buyer has paid enough, 
     // and any excess ether sent is refunded back to the buyer
-    function adoptArtwork(uint _artworkID, address payable _adopterID) public payable 
+    function adoptArtwork(uint _artworkID, address payable _adopterID) 
+        public 
+        payable 
         //onlyArtAdopter - TODO: user is able to register as an art adopter
         adoptable(_artworkID)
         verifyCaller(_adopterID)
@@ -273,7 +293,8 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
     }
 
     // Define a function 'packArtwork' that allows an artist to mark an artwork 'Packed'
-    function packArtwork(uint _artworkID) public 
+    function packArtwork(uint _artworkID) 
+        public 
         onlyArtist
         adopted(_artworkID)
         verifyArtist(_artworkID)
@@ -288,7 +309,8 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
     }
 
     // Define a function 'pickUpArtwork' that allows a shipper to mark an artwork 'PickedUp'
-    function pickUpArtwork(uint _artworkID) public 
+    function pickUpArtwork(uint _artworkID) 
+        public 
         packed(_artworkID)
     {
         Artwork storage a = artworks[_artworkID];
@@ -304,11 +326,14 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
         emit PickedUp(_artworkID);
 
         // Add rep picking up the artwork to the Shipper accounts
-        addShipper(msg.sender);
+        if (!isShipper(msg.sender)) {
+            addShipper(msg.sender);
+        }
     }
 
     // Define a function 'shipArtwork' that allows the shipper to mark an artwork 'Shipped'
-    function shipArtwork(uint _artworkID) public
+    function shipArtwork(uint _artworkID) 
+        public
         onlyShipper
         onlyArtworkOwner(_artworkID)
         pickedUp(_artworkID)
@@ -324,7 +349,8 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
 
     // Define a function 'deliverArtwork' that allows the shipper to mark an artwork 'Delivered'
     // Use the above modifiers to check if the item is shipped
-    function deliverArtwork(uint _artworkID) public
+    function deliverArtwork(uint _artworkID) 
+        public
         onlyShipper
         onlyArtworkOwner(_artworkID)
         shipped(_artworkID)
@@ -340,31 +366,62 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
     }
 
     // Define a function 'fetchArtworkOwner' that gets the current owner of the artwork
-    function fetchArtworkOwner(uint _artworkID) public view returns (address artworkOwnerID)
+    function fetchArtworkOwner(uint _artworkID)
+        public
+        view
+        has(_artworkID)
+        returns (address artworkOwnerID)
     {
         artworkOwnerID = artworks[_artworkID].artworkOwnerID;
     }
 
+    // Define a function 'fetchArtworkOwnerAndState' that gets the current owner and state of the artwork
+    function fetchArtworkOwnerAndState(uint _artworkID)
+        public 
+        view
+        has(_artworkID)
+        returns
+        (
+            address artworkOwnerID,
+            State artworkState
+        )
+    {
+        artworkOwnerID = artworks[_artworkID].artworkOwnerID;
+        artworkState = artworks[_artworkID].artworkState;
+    }
+
     // Define a function 'fetchArtworkState' that gets the current state of the artwork
-    function fetchArtworkState(uint _artworkID) public view returns (State artworkState)
+    function fetchArtworkState(uint _artworkID)
+        public 
+        view
+        has(_artworkID)
+        returns (State artworkState)
     {
         artworkState = artworks[_artworkID].artworkState;
     }
 
     // Define a function 'fetchArtworkPrice' that gets the adoption price of the artwork
-    function fetchArtworkPrice(uint _artworkID) public view returns (uint256 artworkPrice)
+    function fetchArtworkPrice(uint _artworkID)
+        public 
+        view
+        has(_artworkID)
+        returns (uint256 artworkPrice)
     {
         artworkPrice = artworks[_artworkID].artworkPrice;
     }
 
     // Define a functon 'fetchArtistDetails' that gets the artist information
-    function fetchArtistDetails(uint _artworkID) public view returns
-    (
-        address payable originArtistID,
-        string memory originArtistName,
-        string memory originArtistInfo,
-        string memory originArtistLocation
-    )
+    function fetchArtistDetails(uint _artworkID) 
+        public 
+        view
+        has(_artworkID)
+        returns
+        (
+            address payable originArtistID,
+            string memory originArtistName,
+            string memory originArtistInfo,
+            string memory originArtistLocation
+        )
     {
         Artwork storage a = artworks[_artworkID];
 
@@ -379,21 +436,24 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
 
 
     // Define a function 'fetchArtworkDetails' that fetches the artwork data
-    function fetchArtworkDetails(uint _artworkID) public view returns 
-    (
-        uint artworkID,
-        address artworkOwnerID,
-        string memory artworkTitle,
-        uint artworkYear,
-        string memory artworkStyle,
-        uint256 artworkPrice,
-        string memory artistNotes,
-        State artworkState,
-        address payable artAdopterID,
-        address shipperID
-    ) 
+    function fetchArtworkDetails(uint _artworkID) 
+        public 
+        view 
+        has(_artworkID)
+        returns (
+            uint artworkID,
+            address artworkOwnerID,
+            string memory artworkTitle,
+            uint artworkYear,
+            string memory artworkMedium,
+            string memory artworkStyle,
+            uint256 artworkPrice,
+            string memory artistNotes,
+            State artworkState,
+            address payable artAdopterID,
+            address shipperID
+        ) 
     {
-        // Assign values to parameters
         Artwork storage a = artworks[_artworkID];
     
         return 
@@ -402,6 +462,7 @@ contract ArtSupplyChain is ArtistRole, ShipperRole, ArtAdopterRole, Ownable {
             a.artworkOwnerID,
             a.artworkTitle,
             a.artworkYear,
+            a.artworkMedium,
             a.artworkStyle,           
             a.artworkPrice,
             a.artistNotes,

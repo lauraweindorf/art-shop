@@ -65,9 +65,10 @@ contract('ArtSupplyChain', function(accounts) {
         assert.equal(resultArtworkDetails[1], artworkOwnerID, 'Invalid artwork owner')
         assert.equal(resultArtworkDetails[2], artworkTitle, 'Invalid artwork title')
         assert.equal(resultArtworkDetails[3], artworkYear, 'Invalid artwork year')
-        assert.equal(resultArtworkDetails[4], artworkStyle, 'Invalid artwork style')
-        assert.equal(resultArtworkDetails[6], artistNotes, 'Invalid artist notes')
-        assert.equal(resultArtworkDetails[7], 0, 'Invalid artwork state')
+        assert.equal(resultArtworkDetails[4], artworkMedium, 'Invalid artwork medium')
+        assert.equal(resultArtworkDetails[5], artworkStyle, 'Invalid artwork style')
+        assert.equal(resultArtworkDetails[7], artistNotes, 'Invalid artist notes')
+        assert.equal(resultArtworkDetails[8], 0, 'Invalid artwork state')
     })
 
 
@@ -77,7 +78,8 @@ contract('ArtSupplyChain', function(accounts) {
     
         // State gets changed to 'Framed'
         const result = await artSupplyChain.frameArtwork(artworkID, {from: originArtistID}) 
-        const state = await artSupplyChain.fetchArtworkState.call(artworkID)
+        const ownerAndState = await artSupplyChain.fetchArtworkOwnerAndState.call(artworkID)
+        let state = ownerAndState[1]
         
         assert.equal(state, 1, 'State is not Framed')
         // Verify event emitted
@@ -122,8 +124,8 @@ contract('ArtSupplyChain', function(accounts) {
 
         // Verify the artwork owner, state, and adopter ID
         assert.equal(resultArtworkDetails[1], artAdopterID, 'Ownership not transferred to art adopter ID')
-        assert.equal(resultArtworkDetails[7], 3, 'State is not Adopted')
-        assert.equal(resultArtworkDetails[8], artAdopterID, 'Invalid artwork adopter ID')
+        assert.equal(resultArtworkDetails[8], 3, 'State is not Adopted')
+        assert.equal(resultArtworkDetails[9], artAdopterID, 'Invalid artwork adopter ID')
         assert.equal(toBN(balanceAfter).toString(), expectedBalance.toString(), 'Excess not transferred back to art adopter ID')
 
         // Verify event emitted
@@ -157,8 +159,8 @@ contract('ArtSupplyChain', function(accounts) {
 
         // Verify the artwork owner, state, and shipper ID
         assert.equal(resultArtworkDetails[1], shipperID, 'Ownership not transferred to shipper')
-        assert.equal(resultArtworkDetails[7], 5, 'State is not PickedUp')
-        assert.equal(resultArtworkDetails[9], shipperID, 'Invalid shipper ID')
+        assert.equal(resultArtworkDetails[8], 5, 'State is not PickedUp')
+        assert.equal(resultArtworkDetails[10], shipperID, 'Invalid shipper ID')
 
         // Verify event emitted
         truffleAssert.eventEmitted(result, 'PickedUp')
@@ -192,7 +194,7 @@ contract('ArtSupplyChain', function(accounts) {
 
         // Verify the artwork owner, state, and art adopter ID
         assert.equal(resultArtworkDetails[1], artAdopterID, 'Ownership not transferred to art adopter')
-        assert.equal(resultArtworkDetails[7], 7, 'State is not Delivered')
+        assert.equal(resultArtworkDetails[8], 7, 'State is not Delivered')
 
         // Verify event emitted
         truffleAssert.eventEmitted(result, 'Delivered')

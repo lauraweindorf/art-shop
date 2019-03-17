@@ -15,6 +15,12 @@ body {
 }
 
 input {
+    width: 90%;
+    padding: 12px 20px;
+    margin: 10px 0;
+}
+
+.text-div {
     width: 80%;
     padding: 12px 20px;
     margin: 10px 0;
@@ -33,16 +39,38 @@ button {
     cursor: pointer;
 }
 
-.sell { 
+.adopt { 
   background-color: white;
   color: #D1C4E9;
 }
 
-.ftc-intro {
+.status {
+    color: #036570;
+    font-size: 14px;
+    font-style: italic;
+}
+
+.error {
+    color: #b40303;
+    font-size: 14px;
+    font-style: italic;
+}
+
+.as-intro {
   background-color:#0097A7;
   color:white;
   width:100%;
   padding:20px;
+}
+
+.as-account {
+  background-color:rgb(206, 200, 113);
+  color:black;
+  width:100%;
+  padding:10px;
+  text-align: center;
+  font-style: italic;
+  font-size: 14px;
 }
 
 .form-group {
@@ -63,4 +91,5 @@ button {
 
 .horizontal-rule {
   background-color:#BDBDBD;
+  width: 100%;
 }

@@ -14,29 +14,41 @@
         <h1 style="text-align: center;">Art Shop</h1>
         <hr>
         <p style="text-align: center;">Prove the authenticity of artwork using the Ethereum blockchain.</p>
+        <br>
+        <div class="as-account">
+            <span class="bold">MetaMask Account: </span>
+            <span id="metaMaskAccountID">
+                <!-- App will insert currently active MetaMask account ID here -->
+            </span>
+        </div>
+        <br>
     </div>
 
     <div id="as-artwork">
+        <div id="as-error" class="error" style="display: none">
+            <!-- error status message will appear here from app.js-->
+        </div>
+        <div id="as-artworkState" class="status">
+            <!-- successful status message will appear here from app.js -->
+        </div>
         <h2>Artwork Overview</h2>
         <div class="form-group">
             Artwork ID
             <br>
-            <input class="input-field" type="text" id="sku" name="sku" value="WEIN1001"><br>
+            <input class="input-field" type="text" id="artworkID" name="artworkID" value=""><br>
             Current Owner ID
             <br>
-            <input type="text" id="artworkOwnerID" name="artworkOwnerID" value="0x963865f57804b38459dd4b2da2f760211a200438" size="50"><br>
-
+            <input type="text" class="input-address" id="artworkOwnerID" name="artworkOwnerID" value="" size="50"><br>
             <div class=button-div>
-                <button class="btn-fetchArtworkInfo" id="button" type="button" data-id="9">Fetch Details</button>   
+                <button class="btn-fetchArtwork" id="button" type="button" data-id="8">Fetch Artwork Item</button>
             </div>
         </div>
         <div class=form-break></div>
-        <h2>Artist Details</h2>
+        <h2>Artist Info</h2>
         <div class="form-group">
             Artist ID
             <br>
-            <input type="text" id="originArtistID" name="originArtistID" value="0x99c289eb2aacec289631a5ddf62cf27a63d4494f"
-                size="50"><br>
+            <input type="text" class="input-address" id="originArtistID" name="originArtistID" value="" size="50"><br>
             Artist Name
             <br>
             <input type="text" id="originArtistName" name="originArtistName" value="Dave Weindorf Ternisky"><br>
@@ -55,7 +67,7 @@
             <input type="text" id="artworkTitle" name="artworkTitle" value="Clattering Teeth"><br>
             Year
             <br>
-            <input type="date" id="artworkYear" name="artworkYear" value=2018><br>
+            <input type="text" id="artworkYear" name="artworkYear" value="2018"><br>
             Medium
             <br>
             <input type="text" id="artworkMedium" name="artworkMedium" value="Enamel and watercolor on canvas"><br>
@@ -65,29 +77,38 @@
             Artist Notes
             <br>
             <input type="text" id="artistNotes" name="artistNotes" value="Reminds me of Picasso's Guernica" size="60"><br>
+
+            <button class="btn-create" id="button" type="button" data-id="0">Create</button>
+            <button class="btn-frame" id="button" type="button" data-id="1">Frame</button>
+            <button class="btn-pack" id="button" type="button" data-id="4">Pack</button>
+
+            <br>
+            <br>
             Artwork Price
             <br>
-            <input type="number" id="artworkPrice" name="artworkPrice" value=6>ETH<br>
-
-            <button class="btn-create" id="button" type="button" data-id="1">Create</button>
-            <button class="btn-frame" id="button" type="button" data-id="2">Frame</button>
-            <button class="btn-foradoption" id="button" type="button" data-id="3">For Adoption</button>
+            <input type="number" id="artworkPrice" name="artworkPrice" value="3">ETH<br>
+            <button class="btn-forAdoption" id="button" type="button" data-id="2">For Adoption</button>
         </div>
         <div class=form-break></div>
-        <h2>Adoption Details</h2>
+        <h2>Adopt an Artwork</h2>
         <div class="form-group">
             Adopter ID
             <br>
-            <input type="text" id="artAdopterID" name="artAdopterID" value="0x5d777e9127b28fb119e81a6304278a0a21bef1c4" size="50"><br>
+            <input type="text" class="input-address" id="artAdopterID" name="artAdopterID" value="" size="50"><br>
             <br>
+            <button class="btn-adopt" id="button" type="button" data-id="3">Adopt</button>
+        </div>
+        <hr>
+        <div class=form-break></div>
+        <h2>Shipping Details</h2>
+        <div class="form-group">
             Shipper ID
             <br>
-            <input type="text" id="shipperID" name="shipperID" value="0xf1b1bcd24dad92303dd9fe78be639f7bcf9c238d" size="50"><br>
+            <input type="text" class="input-address" id="shipperID" name="shipperID" value="" size="50"><br>
 
-            <button class="btn-adopt" id="button" type="button" data-id="4">Adopt</button>
-            <button class="btn-pack" id="button" type="button" data-id="5">Pack</button>
+            <button class="btn-pickUp" id="button" type="button" data-id="5">PickUp</button>
             <button class="btn-ship" id="button" type="button" data-id="6">Ship</button>
-            <button class="btn-deliver" id="button" type="button" data-id="7">Delivered</button>
+            <button class="btn-deliver" id="button" type="button" data-id="7">Deliver</button>
         </div>
         <hr>
     </div>
@@ -102,7 +123,6 @@
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- <script src="js/web3.min.js"></script> -->
     <script src="js/truffle-contract.js"></script>
     <script src="js/app.js"></script>
 </body>
