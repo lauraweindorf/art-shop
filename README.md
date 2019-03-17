@@ -75,6 +75,33 @@ npm run dev
 ![](images/artwork-details.png)
 ![](images/artwork-adoption-info.png)
 ![](images/shipping-details.png)
+
+### Going through the stages of the Art Supply Chain
+
+Initially the blockchain will not have any artworks or transaction history. Some artwork fields are filled in for you to make Creating the Artwork easier, but you can modify the Artist and Artwork details as desired.
+
+NOTE: Clicking in an address field will automatically populate it with the current MetaMask account. You can go through the different stages Truffle Ganache account that was used to deploy the contracts, or you can setup MetaMask with a separate Ganache account for each of the roles: Artist, Art Adopter, Shipper.
+
+(The states are displayed at the top of the UI as you go through the supply chain process. Notice that the current artwork owner ID changes as you progress through the supply chain stages.)
+
+1. Fill in the artist and artwork details and click `Create`
+
+2. Move the artwork to the next stage by clicking `Frame`
+
+3. Enter an artwork price in Ether and clickj `Put Up For Adoption`
+
+4. Click into the Art Adopter ID field to fill in the address and click `Adopt`
+
+5. Prepare the artwork for pick-up by the Shipper by clicking `Pack`
+
+6. Click into the Shipper ID field to fill in the address and click `Pick Up`
+
+7. Mark the artwork as shipped by clicking on `Ship`
+
+8. Finally, to indicate the artwork was delivered the Shipper clicks `Deliver`
+
+After going through the different stages of the Artwork (Created, Framed, etc.) your transaction history should look like the list below.
+
 ![](images/transaction-history.png)
 
 ## Built With
