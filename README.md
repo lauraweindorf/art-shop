@@ -121,9 +121,9 @@ to make the web faster, safer, and more open.
 
 ## Libraries
 
-* lite-server 2.4.0 - local development server
-* truffle-assertions ^0.8.0 - for testing emitted contract events
-* truffle-hdwallet-provider ^1.0.5 - used to deploy the contract to Rinkeby
+* lite-server - local development server
+* truffle-assertions - for testing emitted contract events
+* truffle-hdwallet-provider - used to deploy the contract to Rinkeby
 
 ## Authors
 
