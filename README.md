@@ -12,7 +12,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-Please make sure you've already installed ganache-cli, Truffle and enabled MetaMask extension in your browser.
+Install Truffle, Ganache (or optionally ganache-cli) and enabled the MetaMask extension in your browser. See info below for the versions used by this project.
 
 ### Installing
 
@@ -31,15 +31,15 @@ cd art-shop/dapp
 npm install
 ```
 
-Launch Ganache, or you can use `ganache-cli`, but you'll need to modify the port setting in `truffle.js` to 8545:
+Launch Ganache, 
+
+![](images/ganache.png)
+
+Or you can use `ganache-cli`, but you'll need to modify the port setting in `truffle.js` to 8545:
 
 ```
 ganache-cli -m "apart ice rhythm antenna regular tattoo hint outer mushroom invite sail huge"
 ```
-
-Your terminal should look something like this:
-
-![](images/ganache-cli.png)
 
 In a separate terminal window, Compile smart contracts:
 
@@ -49,7 +49,7 @@ truffle compile
 
 This will create the smart contract artifacts in folder ```dapp/build/contracts```.
 
-Migrate smart contracts to the locally running blockchain, ganache-cli:
+Migrate smart contracts to the locally running blockchain (Ganache):
 
 ```
 truffle migrate
@@ -63,6 +63,21 @@ truffle test
 
 All tests should pass.
 
+
+## Interacting with the Art Supply Chain contract
+
+Run the local development server to start the Art Shop dapp, which will launch the UI in your browser.
+
+```
+npm run dev
+```
+
+![](images/art-shop-overview.png)
+![](images/artist-info.png)
+![](images/artwork-details.png)
+![](images/artwork-adoption-info.png)
+![](images/shipping-details.png)
+![](images/transaction-history.png)
 
 ## Built With
 
@@ -85,4 +100,3 @@ See also the list of [contributors](https://github.com/lauraweindorf/art-shop/co
 * Ganache v1.3.1
 * Truffle v5.0.5
 * IPFS
-
