@@ -119,6 +119,11 @@ Use the `Fetch Artwork Item` button at the top to fetch any artwork item and see
 to make the web faster, safer, and more open.
 * [Truffle Framework](http://truffleframework.com/) - Truffle is the most popular development framework for Ethereum with a mission to make your life a whole lot easier.
 
+## Libraries
+
+* lite-server 2.4.0 - local development server
+* truffle-assertions ^0.8.0 - for testing emitted contract events
+* truffle-hdwallet-provider ^1.0.5 - used to deploy the contract to Rinkeby
 
 ## Authors
 
