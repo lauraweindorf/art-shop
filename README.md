@@ -8,15 +8,13 @@ This repository containts an Ethereum DApp that demonstrates an Artwork Supply C
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will thee project up and running in your local development environment.
 
 ### Prerequisites
 
-Install Truffle, Ganache (or optionally ganache-cli) and enabled the MetaMask extension in your browser. See info below for the versions used by this project.
+Install Truffle and Ganache (or optionally ganache-cli). Enable the MetaMask extension in your browser. See info below for the versions used by this project.
 
 ### Installing
-
-A step by step series of examples that tell you have to get a development env up and running
 
 Clone this repository:
 
@@ -31,7 +29,7 @@ cd art-shop/dapp
 npm install
 ```
 
-Launch Ganache, 
+Launch Ganache:
 
 ![](images/ganache.png)
 
@@ -47,7 +45,7 @@ In a separate terminal window, Compile smart contracts:
 truffle compile
 ```
 
-This will create the smart contract artifacts in folder ```dapp/build/contracts```.
+This will create the smart contract artifacts in the ```dapp/build/contracts``` folder.
 
 Migrate smart contracts to the locally running blockchain (Ganache):
 
