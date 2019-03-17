@@ -12,7 +12,7 @@ This repository contains an Ethereum DApp that demonstrates an Artwork Supply Ch
 
 ## Getting Started
 
-These instructions will thee project up and running in your local development environment.
+These instructions will get the project up and running in your local development environment.
 
 ### Prerequisites
 
@@ -94,7 +94,7 @@ NOTE: Clicking in an address field will automatically populate it with the curre
 
 2. Move the artwork to the next stage by clicking `Frame`
 
-3. Enter an artwork price in Ether and clickj `Put Up For Adoption`
+3. Enter an artwork price and click `Put Up For Adoption`
 
 4. Click into the Art Adopter ID field to fill in the address and click `Adopt`
 
@@ -104,7 +104,7 @@ NOTE: Clicking in an address field will automatically populate it with the curre
 
 7. Mark the artwork as shipped by clicking on `Ship`
 
-8. Finally, to indicate the artwork was delivered the Shipper clicks `Deliver`
+8. Finally, to indicate the artwork was delivered the Shipper click `Deliver`
 
 After going through the different stages of the Artwork (Created, Framed, etc.) your transaction history should look like the list below.
 
@@ -117,7 +117,7 @@ Use the `Fetch Artwork Item` button at the top to fetch any artwork item and see
 * [Ethereum](https://www.ethereum.org/) - Ethereum is a decentralized platform that runs smart contracts
 * [IPFS](https://ipfs.io/) - IPFS is the Distributed Web | A peer-to-peer hypermedia protocol
 to make the web faster, safer, and more open.
-* [Truffle Framework](http://truffleframework.com/) - Truffle is the most popular development framework for Ethereum with a mission to make your life a whole lot easier.
+* `TODO: [Truffle Framework](http://truffleframework.com/) - Truffle is the most popular development framework for Ethereum with a mission to make your life a whole lot easier.`
 
 ## Libraries
 
@@ -137,4 +137,4 @@ See also the list of [contributors](https://github.com/lauraweindorf/art-shop/co
 * Solidity v0.5.4
 * Ganache v1.3.1
 * Truffle v5.0.5
-* IPFS
+* `TODO: IPFS`
