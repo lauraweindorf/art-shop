@@ -78,13 +78,15 @@ npm run dev
 
 ### Going through the stages of the Art Supply Chain
 
-Initially the blockchain will not have any artworks or transaction history. Some artwork fields are filled in for you to make Creating the Artwork easier, but you can modify the Artist and Artwork details as desired.
+Initially the blockchain will not have any artworks or transaction history. Some artwork fields are filled in for you to make creating the Artwork easier, but you can modify the Artist and Artwork details as desired.
 
-NOTE: Clicking in an address field will automatically populate it with the current MetaMask account. You can go through the different stages Truffle Ganache account that was used to deploy the contracts, or you can setup MetaMask with a separate Ganache account for each of the roles: Artist, Art Adopter, Shipper.
+NOTE: Clicking in an address field will automatically populate it with the current MetaMask account. You can go through the different stages with the Truffle Ganache account that was used to deploy the contracts, or you can setup MetaMask with a separate Ganache account for each of the roles: Artist, Art Adopter, Shipper.
 
 (The states are displayed at the top of the UI as you go through the supply chain process. Notice that the current artwork owner ID changes as you progress through the supply chain stages.)
 
 1. Fill in the artist and artwork details and click `Create`
+
+![](images/artwork-created.png)
 
 2. Move the artwork to the next stage by clicking `Frame`
 
@@ -103,6 +105,8 @@ NOTE: Clicking in an address field will automatically populate it with the curre
 After going through the different stages of the Artwork (Created, Framed, etc.) your transaction history should look like the list below.
 
 ![](images/transaction-history.png)
+
+Use the `Fetch Artwork Item` button at the top to fetch any artwork item and see its state and other details.
 
 ## Built With
 
